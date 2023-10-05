@@ -18,7 +18,7 @@ public class Person implements Serializable {
     @Column(name = "name")
     private String name;
     @Column(name = "birthDate")
-    private Date birthDate;
+    private String birthDate;
     @JsonIgnore
     @OneToMany(mappedBy = "person")
     private Set<Address> address;
@@ -27,7 +27,7 @@ public class Person implements Serializable {
 
     }
 
-    public Person(String name, Date birthDate) {
+    public Person(String name, String birthDate) {
         this.name = name;
         this.birthDate = birthDate;
     }
@@ -48,11 +48,11 @@ public class Person implements Serializable {
         this.name = name;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 }

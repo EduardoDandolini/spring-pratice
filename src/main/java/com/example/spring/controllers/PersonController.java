@@ -21,8 +21,8 @@ public class PersonController {
         return ResponseEntity.ok().body(person);
     }
     @GetMapping(value = "/findById/{id}")
-    public ResponseEntity<Person> findById(@PathVariable(required = true) Long id) {
-        Person person = personService.findById(id);
+    public ResponseEntity findById(@PathVariable(required = true) Long id) {
+        List<Person> person = personService.findById(id);
         return ResponseEntity.ok().body(person);
     }
 

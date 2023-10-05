@@ -24,10 +24,6 @@ public class AddressService {
     @Transactional(rollbackFor = Exception.class)
     public Address saveAddress(Address address, Long idPerson) {
         if (personService.checksIfPersonExists(idPerson)) {
-            if (addressEntity.getMain() == false) {
-                addressEntity.setMain(false);
-            }
-
             return addressRepository.save(address);
         }
        throw new NotFoundException("Error saving address");

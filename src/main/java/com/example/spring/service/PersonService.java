@@ -31,9 +31,10 @@ public class PersonService {
         return personList;
     }
     @Transactional(readOnly = true)
-    public Person findById(Long id) {
-        Optional<Person> personOptional = personRepository.findById(id);
-        return personOptional.get();
+    public List<Person>findById(Long id) {
+        List<Person> personList = new ArrayList<>();
+        personList.stream().forEach(personEntity -> personRepository.findById(id));
+        return personList;
     }
     @Transactional(rollbackFor = Exception.class)
     public Person update (Long id, Person person) {
