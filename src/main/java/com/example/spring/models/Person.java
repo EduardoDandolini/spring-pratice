@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -18,7 +19,7 @@ public class Person implements Serializable {
     @Column(name = "name")
     private String name;
     @Column(name = "birthDate")
-    private String birthDate;
+    private LocalDate birthDate;
     @JsonIgnore
     @OneToMany(mappedBy = "person")
     private Set<Address> address;
@@ -27,7 +28,7 @@ public class Person implements Serializable {
 
     }
 
-    public Person(String name, String birthDate) {
+    public Person(String name, LocalDate birthDate) {
         this.name = name;
         this.birthDate = birthDate;
     }
@@ -48,11 +49,11 @@ public class Person implements Serializable {
         this.name = name;
     }
 
-    public String getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 }

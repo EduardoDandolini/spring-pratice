@@ -1,5 +1,6 @@
 package com.example.spring.service;
 
+import com.example.spring.dtos.PersonDTO;
 import com.example.spring.models.Person;
 import com.example.spring.repository.PersonRepository;
 import com.example.spring.service.exceptions.DataBaseException;
@@ -20,27 +21,30 @@ public class PersonService {
     private PersonRepository personRepository;
 
     private Person personEntity = new Person();
+
+    private PersonDTO personDTO = new PersonDTO();
+
     @Transactional(rollbackFor = Exception.class)
-    public Person save(Person person) {
-        return personRepository.save(person);
+    public PersonDTO save(PersonDTO personDTO) {
+        return personRepository.save(personDTO);
     }
     @Transactional(readOnly = true)
-    public List<Person> findAll() {
-        List<Person> personList = new ArrayList<Person>();
+    public List<PersonDTO> findAll() {
+        List<PersonDTO> personList = new ArrayList<PersonDTO>();
         personList.stream().forEach(personEntity -> personRepository.findAll());
         return personList;
     }
     @Transactional(readOnly = true)
-    public List<Person>findById(Long id) {
-        List<Person> personList = new ArrayList<>();
+    public List<PersonDTO>findById(Long id) {
+        List<PersonDTO> personList = new ArrayList<>();
         personList.stream().forEach(personEntity -> personRepository.findById(id));
         return personList;
     }
     @Transactional(rollbackFor = Exception.class)
-    public Person update (Long id, Person person) {
-        personEntity = personRepository.getReferenceById(id);
-        updateData(personEntity, person);
-        return personRepository.save(personEntity);
+    public PersonDTO update (Long id, PersonDTO personDTO) {
+        personDTO = personRepository.getReferenceById(id);
+        updateData(personEntity, personDTO);
+        return personRepository.save(personDTO);
     }
     @Transactional(rollbackFor = Exception.class)
     public void delete (Long id) {
@@ -53,13 +57,13 @@ public class PersonService {
         }
     }
 
-     public void updateData (Person entity, Person person) {
-        entity.setName(person.getName());
-        entity.setBirthDate(person.getBirthDate());
+     public void updateData (Person entity, PersonDTO personDTO) {
+        entity.setName(personDTO.getName());
+        entity.setBirthDate(personDTO.getBirthDate());
      }
     @Transactional(readOnly = true)
     public boolean checksIfPersonExists (Long id) {
-        Optional<Person> personOptional = personRepository.findById(id);
+        Optional<PersonDTO> personOptional = personRepository.findById(id);
         if (personOptional.isPresent()) {
             return true;
         }
