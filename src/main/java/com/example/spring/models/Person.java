@@ -1,5 +1,6 @@
 package com.example.spring.models;
 
+import com.example.spring.dtos.PersonDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -7,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,8 +23,8 @@ public class Person implements Serializable {
     @Column(name = "birthDate")
     private LocalDate birthDate;
     @JsonIgnore
-    @OneToMany(mappedBy = "person")
-    private Set<Address> address;
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Address> address;
 
     public Person() {
 
@@ -55,5 +57,9 @@ public class Person implements Serializable {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public PersonDTO personToDto() {
+       return new PersonDTO(name, birthDate);
     }
 }

@@ -16,13 +16,13 @@ public class AddresController {
 
     @Autowired
     AddressService addressService;
-    @PostMapping(value = "/save")
-    public ResponseEntity saveAddress(@RequestBody Address address,@PathVariable Long idPessoa) {
-        Address addressSave = addressService.saveAddress(address, idPessoa);
+    @PostMapping(value = "/save/{id}")
+    public ResponseEntity saveAddress(@RequestBody Address address,@PathVariable Long id) {
+        Address addressSave = addressService.saveAddress(address, id);
         return ResponseEntity.ok().body(addressSave);
     }
 
-    @GetMapping(value = "/findById")
+    @GetMapping(value = "/findById/{id}")
     public ResponseEntity findById(@PathVariable Long id) {
         Address address = addressService.findById(id);
         return ResponseEntity.ok().body(address);
@@ -33,12 +33,12 @@ public class AddresController {
         return ResponseEntity.ok().body(addressList);
     }
 
-    @PutMapping(value = "/update")
+    @PutMapping(value = "/update/{id}")
     public ResponseEntity updateAddress(@PathVariable Long id,@RequestBody Address address) {
         Address addressEntity = addressService.update(id, address);
         return ResponseEntity.ok().body(addressEntity);
     }
-    @DeleteMapping(value = "/delete")
+    @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity deleteAddress(@PathVariable  Long id) {
         addressService.delete(id);
         return ResponseEntity.noContent().build();

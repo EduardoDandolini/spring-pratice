@@ -1,5 +1,6 @@
 package com.example.spring.models;
 
+import com.example.spring.dtos.AddressDTO;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -19,13 +20,19 @@ public class Address implements Serializable {
     private Integer number;
     @Column
     private String city;
-    @Column
-    private Boolean main;
-    @ManyToOne
-    @JoinColumn(name = "address", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_person", nullable = false)
     private Person person;
 
     public Address() {
+
+    }
+
+    public Address(AddressDTO addressDTO) {
+        this.publicPlace = addressDTO.getPublicPlace();
+        this.zipCode = addressDTO.getZipCode();
+        this.number = addressDTO.getNumber();
+        this.city = addressDTO.getCity();
     }
 
     public Address(String publicPlace, String zipCode, Integer number, String city, boolean main, Person person) {
@@ -33,7 +40,6 @@ public class Address implements Serializable {
         this.zipCode = zipCode;
         this.number = number;
         this.city = city;
-        this.main = main;
         this.person = person;
     }
 
@@ -77,11 +83,21 @@ public class Address implements Serializable {
         this.city = city;
     }
 
-    public boolean getMain() {
-        return main;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setMain(Boolean main) {
-        this.main = main;
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public AddressDTO addresToDto() {
+        AddressDTO addressDTO = new AddressDTO();
+        addressDTO.setPublicPlace(publicPlace);
+        addressDTO.setZipCode(zipCode);
+        addressDTO.setCity(city);
+        addressDTO.setNumber(number);
+        addressDTO.setPersonDTO(person.personToDto());
+        return addressDTO;
     }
 }

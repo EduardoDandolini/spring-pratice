@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/person")
@@ -17,27 +18,27 @@ public class PersonController {
     @Autowired
     PersonService personService;
     @PostMapping(value = "/save")
-    public ResponseEntity<PersonDTO> save(@RequestBody PersonDTO personDTO)  {
-        personDTO = personService.save(personDTO);
-        return ResponseEntity.ok().body(personDTO);
+    public ResponseEntity<Person> save(@RequestBody Person person)  {
+        person = personService.save(person);
+        return ResponseEntity.ok().body(person);
     }
     @GetMapping(value = "/findById/{id}")
     public ResponseEntity findById(@PathVariable(required = true) Long id) {
-        List<PersonDTO> personDTO = personService.findById(id);
-        return ResponseEntity.ok().body(personDTO);
+        Optional<Person> person = personService.findById(id);
+        return ResponseEntity.ok().body(person);
     }
 
     @GetMapping(value = "/findAll")
     public ResponseEntity findAll() {
-        List<PersonDTO> personList = new ArrayList<>();
+        List<Person> personList = new ArrayList<>();
         personList = personService.findAll();
         return ResponseEntity.ok().body(personList);
     }
 
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<PersonDTO> update(@PathVariable  Long id, @RequestBody PersonDTO personDTO) {
-        personDTO = personService.update(id, personDTO);
-        return ResponseEntity.ok().body(personDTO);
+    public ResponseEntity<Person> update(@PathVariable Long id, @RequestBody Person person) {
+        person = personService.update(id, person);
+        return ResponseEntity.ok().body(person);
     }
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity delete(@PathVariable Long id) {

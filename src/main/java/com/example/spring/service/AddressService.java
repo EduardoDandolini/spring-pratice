@@ -1,5 +1,6 @@
 package com.example.spring.service;
 
+import com.example.spring.dtos.AddressDTO;
 import com.example.spring.models.Address;
 import com.example.spring.repository.AddressRepository;
 import com.example.spring.service.exceptions.NotFoundException;
@@ -22,9 +23,13 @@ public class AddressService {
     PersonService personService;
     Address addressEntity = new Address();
     @Transactional(rollbackFor = Exception.class)
-    public Address saveAddress(Address address, Long idPerson) {
+    public AddressDTO saveAddress(AddressDTO addressDTO, Long idPerson) {
+        Address addressEntity = new Address(addressDTO);
+
         if (personService.checksIfPersonExists(idPerson)) {
-            return addressRepository.save(address);
+            addressEntity.setPerson(personService.findById(idPerson));
+             addressRepository.save(addressEntity);
+             return addressEntity.addresToDto();
         }
        throw new NotFoundException("Error saving address");
     }
