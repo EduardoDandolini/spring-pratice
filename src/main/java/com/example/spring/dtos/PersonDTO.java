@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class PersonDTO {
 
+    private Long id;
     private String name;
     private LocalDate birthDate;
 
@@ -12,6 +13,12 @@ public class PersonDTO {
     }
 
     public PersonDTO(String name, LocalDate birthDate) {
+        this.name = name;
+        this.birthDate = birthDate;
+    }
+
+    public PersonDTO(Long id, String name, LocalDate birthDate) {
+        this.id = id;
         this.name = name;
         this.birthDate = birthDate;
     }

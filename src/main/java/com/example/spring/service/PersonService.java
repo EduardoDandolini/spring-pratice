@@ -29,16 +29,11 @@ public class PersonService {
     public Person save(Person person) {
         return personRepository.save(person);
     }
-    @Transactional(readOnly = true)
-    public List<Person> findAll() {
-        List<Person> personList = new ArrayList<Person>();
-        personList.stream().forEach(personEntity -> personRepository.findAll());
-        return personList;
-    }
 
     @Transactional(readOnly = true)
-    public List<Person> findAllPerson() {
-        return personRepository.findAll();
+    public List<Person> findAll() {
+        List<Person> personList = personRepository.findAll();
+        return personList;
     }
 
     @Transactional(readOnly = true)
@@ -50,11 +45,26 @@ public class PersonService {
         return personList.get();
     }
     @Transactional(rollbackFor = Exception.class)
-    public Person update (Long id, Person person) {
-        person = personRepository.getReferenceById(id);
-        updateData(personEntity, person);
-        return personRepository.save(person);
+    public Person update (Long id, PersonDTO personDTO) {
+        Person personEntity = personRepository.getReferenceById(id);
+        personEntity.setName(personDTO.getName());
+        personEntity.setBirthDate(personDTO.getBirthDate());
+        return personRepository.save(personEntity);
     }
+
+    @Transactional(readOnly = true)
+    public List<PersonDTO> findAllPerson() {
+        return personEntityListToPersonDtoList(personRepository.findAll());
+    }
+    @Transactional(readOnly = true)
+    public List<PersonDTO> personEntityListToPersonDtoList(List<Person> personList) {
+        List<PersonDTO> personDTOList = new ArrayList<PersonDTO>();
+        personList.stream().forEach((personEntity) -> {
+            personDTOList.add(personEntity.personToDto());
+        });
+        return personDTOList;
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public void delete (Long id) {
         try {
@@ -66,10 +76,6 @@ public class PersonService {
         }
     }
 
-     public void updateData (Person entity, Person person) {
-        entity.setName(person.getName());
-        entity.setBirthDate(person.getBirthDate());
-     }
     @Transactional(readOnly = true)
     public boolean checksIfPersonExists (Long id) {
         Optional<Person> personOptional = personRepository.findById(id);

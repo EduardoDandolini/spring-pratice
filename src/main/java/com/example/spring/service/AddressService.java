@@ -41,8 +41,7 @@ public class AddressService {
     }
     @Transactional(readOnly = true)
     public List<Address> findAll() {
-        List<Address> address = new ArrayList<>();
-        address.stream().forEach(addressEntity -> addressRepository.findAll());
+        List<Address> address = addressRepository.findAll();
         return address;
     }
     @Transactional(rollbackFor = Exception.class)

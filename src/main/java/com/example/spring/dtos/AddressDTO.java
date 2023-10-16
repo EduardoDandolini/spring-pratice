@@ -11,12 +11,11 @@ public class AddressDTO {
     public AddressDTO() {
     }
 
-    public AddressDTO(String publicPlace, String zipCode, Integer number, String city, PersonDTO personDTO) {
+    public AddressDTO(String publicPlace, String zipCode, Integer number, String city) {
         this.publicPlace = publicPlace;
         this.zipCode = zipCode;
         this.number = number;
         this.city = city;
-        this.personDTO = personDTO;
     }
 
     public String getPublicPlace() {

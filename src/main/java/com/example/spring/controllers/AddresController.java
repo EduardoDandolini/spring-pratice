@@ -1,5 +1,6 @@
 package com.example.spring.controllers;
 
+import com.example.spring.dtos.AddressDTO;
 import com.example.spring.models.Address;
 import com.example.spring.models.Person;
 import com.example.spring.service.AddressService;
@@ -16,11 +17,21 @@ public class AddresController {
 
     @Autowired
     AddressService addressService;
-    @PostMapping(value = "/save/{id}")
-    public ResponseEntity saveAddress(@RequestBody Address address,@PathVariable Long id) {
-        Address addressSave = addressService.saveAddress(address, id);
-        return ResponseEntity.ok().body(addressSave);
+
+    @PostMapping("/{idPerson}")
+    public ResponseEntity<AddressDTO> saveAddres(@PathVariable Long idPerson, @RequestBody AddressDTO addressDTO) {
+        AddressDTO addressDTOSave = addressService.saveAddress(addressDTO, idPerson);
+        if (addressDTOSave != null) {
+            return new ResponseEntity<>(addressDTOSave, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
+//    @PostMapping(value = "/save/{id}")
+//    public ResponseEntity saveAddress(@RequestBody AddressDTO addressDTO, @PathVariable Long id) {
+//        AddressDTO addressSave = addressService.saveAddress(addressDTO, id);
+//        return ResponseEntity.ok().body(addressSave);
+//    }
 
     @GetMapping(value = "/findById/{id}")
     public ResponseEntity findById(@PathVariable Long id) {

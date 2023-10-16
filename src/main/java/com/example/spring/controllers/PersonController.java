@@ -24,7 +24,7 @@ public class PersonController {
     }
     @GetMapping(value = "/findById/{id}")
     public ResponseEntity findById(@PathVariable(required = true) Long id) {
-        Optional<Person> person = personService.findById(id);
+        Person person = personService.findById(id);
         return ResponseEntity.ok().body(person);
     }
 
@@ -36,8 +36,8 @@ public class PersonController {
     }
 
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<Person> update(@PathVariable Long id, @RequestBody Person person) {
-        person = personService.update(id, person);
+    public ResponseEntity<PersonDTO> update(@PathVariable Long id, @RequestBody PersonDTO person) {
+        Person personDTO = personService.update(id, person);
         return ResponseEntity.ok().body(person);
     }
     @DeleteMapping(value = "/delete/{id}")
