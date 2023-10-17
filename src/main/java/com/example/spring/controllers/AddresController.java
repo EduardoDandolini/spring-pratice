@@ -27,11 +27,6 @@ public class AddresController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-//    @PostMapping(value = "/save/{id}")
-//    public ResponseEntity saveAddress(@RequestBody AddressDTO addressDTO, @PathVariable Long id) {
-//        AddressDTO addressSave = addressService.saveAddress(addressDTO, id);
-//        return ResponseEntity.ok().body(addressSave);
-//    }
 
     @GetMapping(value = "/findById/{id}")
     public ResponseEntity findById(@PathVariable Long id) {

@@ -30,8 +30,9 @@ public class AddressService {
             addressEntity.setPerson(personService.findById(idPerson));
              addressRepository.save(addressEntity);
              return addressEntity.addresToDto();
+        } else {
+            throw new NotFoundException("Error saving address");
         }
-       throw new NotFoundException("Error saving address");
     }
     @Transactional(readOnly = true)
     public Address findById(Long id) {

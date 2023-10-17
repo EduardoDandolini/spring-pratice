@@ -45,17 +45,18 @@ public class PersonService {
         return personList.get();
     }
     @Transactional(rollbackFor = Exception.class)
-    public Person update (Long id, PersonDTO personDTO) {
-        Person personEntity = personRepository.getReferenceById(id);
+    public PersonDTO update (PersonDTO personDTO) {
+        Person personEntity = findById(personDTO.getId());
         personEntity.setName(personDTO.getName());
         personEntity.setBirthDate(personDTO.getBirthDate());
-        return personRepository.save(personEntity);
+        return personRepository.save(personEntity).personToDto();
     }
 
     @Transactional(readOnly = true)
     public List<PersonDTO> findAllPerson() {
         return personEntityListToPersonDtoList(personRepository.findAll());
     }
+
     @Transactional(readOnly = true)
     public List<PersonDTO> personEntityListToPersonDtoList(List<Person> personList) {
         List<PersonDTO> personDTOList = new ArrayList<PersonDTO>();
@@ -67,12 +68,10 @@ public class PersonService {
 
     @Transactional(rollbackFor = Exception.class)
     public void delete (Long id) {
-        try {
+        if (id != null) {
             personRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException(id);
-        } catch (DataIntegrityViolationException e) {
-            throw new DataBaseException(e.getMessage());
+        } else {
+            throw new NotFoundException("Id not found, person does not exist");
         }
     }
 

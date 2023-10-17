@@ -39,23 +39,23 @@ public class PersonServiceTest {
     @Nested
     class saveNewPerson {
         @Test
-        void TestSaveNewPerson() {
+        void testSaveNewPerson() {
             when(personRepository.save(any(Person.class))).thenReturn(personEntity);
             Person personDTO = personService.save(personEntity);
             assertEquals(personEntity, personDTO);
 
-            verify(personRepository, times(1));
+            verify(personRepository, times(1)).save(personEntity);
         }
 
         @Test
-        void TestSaveNewPersonIsNull() {
+        void testSaveNewPersonIsNull() {
             assertThrows(UnprocessableException.class, () -> personService.save(null));
         }
     }
         @Nested
         class TestFindAll {
             @Test
-            void TestFindAllPerson() {
+            void testFindAllPerson() {
                 List<Person> personList = Arrays.asList
                         (new Person("Eduardo", LocalDate.of(2004, 12, 06)),
                                 new Person("Laura", LocalDate.of(2006, 03, 31))
@@ -76,7 +76,7 @@ public class PersonServiceTest {
        @Nested
        class TestFindById {
             @Test
-            void TestFindPersonById() {
+            void testFindPersonById() {
                 Person person = new Person(1L,"Eduardo", LocalDate.of(2004, 12, 06));
 
                 when(personRepository.findById(any(Long.class))).thenReturn(Optional.of(person));
@@ -91,14 +91,21 @@ public class PersonServiceTest {
        @Nested
        class TestUpdatePerson {
             @Test
-            void TestUpdatePersonById() {
+            void testUpdatePersonById() {
                 PersonDTO personDTO = new PersonDTO(1L, "Eduardo", LocalDate.of(2004, 12, 06));
                 Person person = new Person(1L, "EduardoTeste", LocalDate.of(2004, 12, 06));
 
                 when(personRepository.findById(any(Long.class))).thenReturn(Optional.of(person));
                 when(personRepository.save(any(Person.class))).thenReturn(person);
-                Person personUpdate = personService.update(1L, personDTO);
+                PersonDTO personUpdate = personService.update(personDTO);
 
+                assertEquals("Eduardo", personUpdate.getName());
+                assertEquals(LocalDate.of(2004, 12, 06), personUpdate.getBirthDate());
+
+            }
+            @Test
+            void testsUpdatingPersonIsNull() {
+                assertThrows(NullPointerException.class, () -> personService.update(null));
             }
        }
 }
